@@ -1,0 +1,10 @@
+{
+  "description": "Aplicación web basada en el diseño del PDF que utiliza los datos y funciones definidos en archivos SQL para facilitar la gestión de información.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
