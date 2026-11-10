@@ -497,13 +497,18 @@ app.post('/api/citas', async (req, res, next) => {
       IdPaciente: number; IdMedico: number; IdConsultorio: number; IdPersonal: number
       FechaCita: string; HoraCita: string; Motivo: string; IdProcedimiento?: number | null
     }
+    const horaPartes = typeof args.HoraCita === 'string'
+      ? /^([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/.exec(args.HoraCita)
+      : null
+    if (!horaPartes) return res.status(400).json({ error: 'La hora debe tener formato HH:mm.' })
+    const horaCita = new Date(1970, 0, 1, Number(horaPartes[1]), Number(horaPartes[2]), Number(horaPartes[3] ?? 0))
     const request = (await getPool()).request()
       .input('IdPaciente', sql.Int, args.IdPaciente)
       .input('IdMedico', sql.Int, args.IdMedico)
       .input('IdConsultorio', sql.Int, args.IdConsultorio)
       .input('IdPersonal', sql.Int, args.IdPersonal)
       .input('FechaCita', sql.Date, args.FechaCita)
-      .input('HoraCita', sql.Time, args.HoraCita)
+      .input('HoraCita', sql.Time(0), horaCita)
       .input('Motivo', sql.VarChar(250), args.Motivo)
       .input('IdProcedimiento', sql.Int, args.IdProcedimiento ?? null)
       .output('IdCita', sql.Int)
