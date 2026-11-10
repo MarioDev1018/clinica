@@ -30,20 +30,36 @@ function Login({ onLogin }: { onLogin: (s: Session) => Promise<void> }) {
     } catch (err) { setMsg({ tipo: 'error', texto: (err as Error).message }) }
   }
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-sm p-7">
-        <h1 className="mb-1 text-[20px] font-semibold">Clínica {NOMBRE_CLINICA}</h1>
-        <p className="mb-5 text-[13px] text-muted">Iniciar sesión</p>
-        <form onSubmit={submit} className="space-y-3">
-          <Alert msg={msg} />
-          <Field label="Usuario"><Input value={usuario} onChange={(e) => setUsuario(e.target.value)} autoFocus autoComplete="username" /></Field>
-          <Field label="Contraseña"><Input type="password" value={pass} onChange={(e) => setPass(e.target.value)} autoComplete="current-password" /></Field>
-          <Btn type="submit" className="w-full">Ingresar</Btn>
-        </form>
-        <div className="mt-4 rounded border border-dashed border-amber-400 bg-note px-3 py-2 text-[11.5px]">
-          La autenticación se valida contra el personal Activo de SQL Server.
-        </div>
-      </Card>
+    <div className="login-screen">
+      <div className="login-cover" aria-hidden="true">
+        <img className="login-cover-image" src="/login-cover.jpg" alt="" onError={(event) => { event.currentTarget.hidden = true }} />
+      </div>
+      <main className="login-content">
+        <section className="login-card" aria-labelledby="login-title">
+          <header className="login-heading">
+            <div>
+              <h1 id="login-title" className="text-[20px] font-semibold">Clínica {NOMBRE_CLINICA}</h1>
+              <p className="mt-1 text-[13px] text-muted">Iniciar sesión</p>
+            </div>
+            <div className="login-logo">
+              <img src="/clinic-logo.svg" alt={`Logo de Clínica ${NOMBRE_CLINICA}`} onError={(event) => { event.currentTarget.hidden = true }} />
+            </div>
+          </header>
+          <form onSubmit={submit} className="mx-auto mt-3 max-w-[260px] space-y-4">
+            <Alert msg={msg} />
+            <Field label="Usuario">
+              <Input value={usuario} onChange={(e) => setUsuario(e.target.value)} autoFocus autoComplete="username" />
+            </Field>
+            <Field label="Contraseña">
+              <Input type="password" value={pass} onChange={(e) => setPass(e.target.value)} autoComplete="current-password" />
+            </Field>
+            <Btn type="submit" className="w-full py-2.5">Ingresar</Btn>
+          </form>
+          <div className="mx-auto mt-4 w-full max-w-[260px] rounded border border-dashed border-amber-400 bg-note px-3 py-2 text-[11.5px]">
+            La autenticación se valida contra el personal Activo de SQL Server.
+          </div>
+        </section>
+      </main>
     </div>
   )
 }
